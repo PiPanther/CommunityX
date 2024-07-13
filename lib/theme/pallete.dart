@@ -23,7 +23,6 @@ class Pallete {
       backgroundColor: drawerColor,
     ),
     primaryColor: redColor,
-    
   );
 
   static var lightModeAppTheme = ThemeData.light().copyWith(
