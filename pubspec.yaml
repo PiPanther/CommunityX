@@ -43,6 +43,7 @@ dependencies:
   flutter_riverpod: ^2.5.1
   npdart: ^0.3.0
   fpdart: ^1.1.0
+  routemaster: ^1.0.1
 
 dev_dependencies:
   flutter_test:
