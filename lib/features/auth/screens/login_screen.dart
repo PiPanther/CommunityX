@@ -28,27 +28,31 @@ class LoginScreen extends ConsumerWidget {
           )
         ],
       ),
-      body: Column(
-        children: [
-          const SizedBox(height: 20),
-          const Text(
-            'Welcome to Reddit',
-            style: TextStyle(
-                fontWeight: FontWeight.bold, fontSize: 24, letterSpacing: 0.5),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Image.asset(
-              Constants.loginEmotePath,
-              height: 400,
+      body: isLoading
+          ? const Loader()
+          : Column(
+              children: [
+                const SizedBox(height: 30),
+                const Text(
+                  'Dive into anything',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+                const SizedBox(height: 30),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Image.asset(
+                    Constants.loginEmotePath,
+                    height: 400,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                const SignInButton(),
+              ],
             ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          const SignInButton()
-        ],
-      ),
     );
   }
 }
