@@ -19,6 +19,12 @@ final postControllerProvider =
       storageRepo: storageRepository, postRepository: postRepository, ref: ref);
 });
 
+final userPostsProvider =
+    StreamProvider.family((ref, List<Community> communities) {
+  final postController = ref.watch(postControllerProvider.notifier);
+  return postController.fetchUserPost(communities);
+});
+
 class PostController extends StateNotifier<bool> {
   final PostRepository _postRepository;
   final Ref _ref;
@@ -50,7 +56,7 @@ class PostController extends StateNotifier<bool> {
         downvotes: [],
         commentCounts: 0,
         username: user!.name,
-        uid: user!.uid,
+        uid: user.uid,
         type: 'text',
         createdAt: DateTime.now(),
         awards: [],
@@ -137,5 +143,12 @@ class PostController extends StateNotifier<bool> {
         Routemaster.of(context).pop();
       });
     });
+  }
+
+  Stream<List<Post>> fetchUserPost(List<Community> community) {
+    if (community.isNotEmpty) {
+      return _postRepository.fetchUserPosts(community);
+    }
+    return Stream.value([]);
   }
 }

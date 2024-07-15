@@ -85,7 +85,9 @@ class _AddPostTypeScreenState extends ConsumerState<AddPostTypeScreen> {
         centerTitle: true,
         actions: [
           TextButton(
-            onPressed: () => sharePost,
+            onPressed: () {
+              sharePost();
+            },
             child: const Text("Share"),
           ),
         ],
