@@ -1,6 +1,7 @@
 import 'package:any_link_preview/any_link_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:reddit/core/constants/constants.dart';
 import 'package:reddit/features/auth/controllers/auth_controller.dart';
 import 'package:reddit/models/post_model.dart';
 import 'package:reddit/theme/pallete.dart';
@@ -95,10 +96,11 @@ class PostCard extends ConsumerWidget {
                         SizedBox(
                           height: MediaQuery.of(context).size.height * 0.25,
                           width: double.infinity,
-                          child: AnyLinkPreview(
-                            link: post.link!,
-                            displayDirection: UIDirection.uiDirectionHorizontal,
-                          ),
+                          child: Text(post.link! ?? ""),
+                          // child: AnyLinkPreview(
+                          //   link: post.link!,
+                          //   displayDirection: UIDirection.uiDirectionHorizontal,
+                          // ),
                         ),
                       if (isTypeText)
                         Container(
@@ -110,7 +112,55 @@ class PostCard extends ConsumerWidget {
                               style: const TextStyle(color: Colors.grey),
                             ),
                           ),
-                        )
+                        ),
+                      Row(
+                        children: [
+                          Row(
+                            children: [
+                              IconButton(
+                                onPressed: () {},
+                                icon: Icon(
+                                  Constants.up,
+                                  size: 30,
+                                  color: post.upvotes.contains(user.uid)
+                                      ? Pallete.redColor
+                                      : null,
+                                ),
+                              ),
+                              Text(
+                                  style: const TextStyle(fontSize: 17),
+                                  '${post.upvotes.length - post.downvotes.length == 0 ? 'Vote' : post.upvotes.length - post.downvotes.length}'),
+                              IconButton(
+                                onPressed: () {},
+                                icon: Icon(
+                                  Constants.down,
+                                  size: 30,
+                                  color: post.upvotes.contains(user.uid)
+                                      ? Pallete.blueColor
+                                      : null,
+                                ),
+                              )
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              IconButton(
+                                onPressed: () {},
+                                icon: Icon(
+                                  Icons.comment,
+                                  size: 30,
+                                  color: post.upvotes.contains(user.uid)
+                                      ? Pallete.redColor
+                                      : null,
+                                ),
+                              ),
+                              Text(
+                                  style: const TextStyle(fontSize: 17),
+                                  '${post.commentCounts == 0 ? 'Comment' : post.commentCounts}'),
+                            ],
+                          )
+                        ],
+                      ),
                     ],
                   ),
                 )
