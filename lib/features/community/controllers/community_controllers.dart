@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:reddit/core/constants/constants.dart';
+import 'package:reddit/core/providers/failures.dart';
 import 'package:reddit/core/providers/storage_repository_provider.dart';
 import 'package:reddit/core/utils.dart';
 import 'package:reddit/features/auth/controllers/auth_controller.dart';
@@ -69,6 +71,26 @@ class CommunityController extends StateNotifier<bool> {
     });
   }
 
+  void joinCommunity(Community communityName, BuildContext context) async {
+    final user = _ref.read(userProvider)!;
+    Either<Failure, void> result;
+    if (communityName.members.contains(user.uid)) {
+      result = await _communityRepository.leaveCommunity(
+          communityName.name, user.uid);
+    } else {
+      result = await _communityRepository.joinCommunity(
+          communityName.name, user.uid);
+    }
+
+    result.fold((left) => showSnackBar(context, left.message), (right) {
+      if (communityName.members.contains(user.uid)) {
+        showSnackBar(context, 'Community left successfully');
+      } else {
+        showSnackBar(context, 'Community joined successfully');
+      }
+    });
+  }
+
   Stream<List<Community>> getUserCommunity() {
     final uid = _ref.read(userProvider)!.uid;
     return _communityRepository.getUserCommunity(uid);
@@ -105,6 +127,14 @@ class CommunityController extends StateNotifier<bool> {
       (left) => showSnackBar(context, left.message),
       (right) => Routemaster.of(context).pop(),
     );
+  }
+
+  void addMods(
+      String communityName, List<String> uids, BuildContext context) async {
+    final res = await _communityRepository.addMods(communityName, uids);
+
+    res.fold((left) => showSnackBar(context, left.message),
+        (right) => Routemaster.of(context).pop());
   }
 
   Stream<List<Community>> searchCommunity(String query) {
