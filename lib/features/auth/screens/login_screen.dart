@@ -13,45 +13,52 @@ class LoginScreen extends ConsumerWidget {
     final isLoading = ref.watch(authControllerProvider);
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        title: Image.asset(
-          Constants.logoPath,
-          height: 40,
-        ),
-        actions: [
-          TextButton.icon(
-            onPressed: () {},
-            label: const Text(
-              'Skip',
-              style: TextStyle(fontWeight: FontWeight.bold),
+        centerTitle: false,
+        title: Row(
+          children: [
+            Image.asset(
+              Constants.logoPath,
+              height: 45,
             ),
-          )
-        ],
+            const SizedBox(width: 10),
+            const Text(
+              'CommunityX',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+            )
+          ],
+        ),
       ),
       body: isLoading
           ? const Loader()
-          : Column(
-              children: [
-                const SizedBox(height: 30),
-                const Text(
-                  'Dive into anything',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 0.5,
+          : Container(
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: Alignment.bottomCenter,
+                      colors: [Colors.grey.shade100, Colors.white])),
+              height: MediaQuery.of(context).size.height,
+              child: Column(
+                children: [
+                  const SizedBox(height: 30),
+                  const Text(
+                    'Connect Engage Inspire',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 0.5,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 30),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Image.asset(
-                    Constants.loginEmotePath,
-                    height: 400,
+                  const SizedBox(height: 30),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Image.asset(
+                      Constants.loginEmotePath,
+                      height: 420,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 20),
-                const SignInButton(),
-              ],
+                  const SizedBox(height: 20),
+                  const SignInButton(),
+                ],
+              ),
             ),
     );
   }

@@ -8,9 +8,13 @@ class Loader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: LoadingIndicator(
-          indicatorType: Indicator.orbit,
-          colors: [Pallete.blueColor, Pallete.whiteColor]),
+      child: SizedBox(
+        height: 150,
+        width: 150,
+        child: LoadingIndicator(
+            indicatorType: Indicator.orbit,
+            colors: [Pallete.blueColor, Pallete.whiteColor]),
+      ),
     );
   }
 }

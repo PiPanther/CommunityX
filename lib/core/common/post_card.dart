@@ -58,7 +58,7 @@ class PostCard extends ConsumerWidget {
                 Container(
                   padding:
                       const EdgeInsets.symmetric(vertical: 4, horizontal: 16)
-                          .copyWith(right: 0),
+                          .copyWith(right: 16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
