@@ -31,4 +31,17 @@ Developed CommunityX, a responsive social media application using Flutter and Fi
   - Integrated Firebase for backend services and database management.
   - Utilized Riverpod 2.0 for efficient state management.
 
+## Screenshots
+
+Here are some screenshots of the CommunityX application:
+
+![Screenshot 1](Screenshots/1.jpg)
+![Screenshot 2](Screenshots/2.jpg)
+![Screenshot 3](Screenshots/3.jpg)
+![Screenshot 4](Screenshots/4.jpg)
+![Screenshot 5](Screenshots/5.jpg)
+![Screenshot 6](Screenshots/6.jpg)
+![Screenshot 7](Screenshots/7.jpg)
+![Screenshot 8](Screenshots/8.jpg)
+
 ---
