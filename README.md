@@ -6,8 +6,7 @@
 **Technologies:** Flutter, Firebase, Riverpod 2.0
 
 **Description:**
-Developed CommunityX, a responsive social media application using Flutter and Firebase. The app features user authentication, community management, post interactions, and theming capabilities. It is fully responsive and accessible on Android, iOS, and Web platforms.
-
+Developed CommunityX, a responsive social media application using Flutter and Firebase. The app features user authentication, community management, post interactions, and theming capabilities. 
 **Key Contributions:**
 
 - **User Authentication:**
