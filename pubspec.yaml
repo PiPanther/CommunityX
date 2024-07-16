@@ -49,6 +49,9 @@ dependencies:
   shared_preferences: ^2.2.3
   uuid: ^4.4.2
   any_link_preview: ^3.0.2
+  flutter_link_previewer: ^3.2.2
+  linkable: ^3.0.2
+  loading_indicator: ^3.1.1
 
 dev_dependencies:
   flutter_test:

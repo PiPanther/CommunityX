@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:loading_indicator/loading_indicator.dart';
+import 'package:reddit/theme/pallete.dart';
 
 class Loader extends StatelessWidget {
   const Loader({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: CircularProgressIndicator(),
+    return Center(
+      child: LoadingIndicator(
+          indicatorType: Indicator.orbit,
+          colors: [Pallete.blueColor, Pallete.whiteColor]),
     );
   }
 }

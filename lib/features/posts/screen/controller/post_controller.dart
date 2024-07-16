@@ -2,10 +2,13 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:reddit/core/enums/enums.dart';
 import 'package:reddit/core/providers/storage_repository_provider.dart';
 import 'package:reddit/core/utils.dart';
 import 'package:reddit/features/auth/controllers/auth_controller.dart';
 import 'package:reddit/features/posts/screen/repository/post_repository.dart';
+import 'package:reddit/features/user_profile/controllers/user_profile_controllers.dart';
+import 'package:reddit/models/comment_model.dart';
 import 'package:reddit/models/community_model.dart';
 import 'package:reddit/models/post_model.dart';
 import 'package:routemaster/routemaster.dart';
@@ -23,6 +26,14 @@ final userPostsProvider =
     StreamProvider.family((ref, List<Community> communities) {
   final postController = ref.watch(postControllerProvider.notifier);
   return postController.fetchUserPost(communities);
+});
+
+final getPostByIdProvider = StreamProvider.family((ref, String postID) {
+  return ref.watch(postControllerProvider.notifier).getPostbyId(postID);
+});
+
+final getCommentOfPostProvider = StreamProvider.family((ref, String postID) {
+  return ref.watch(postControllerProvider.notifier).fetchPostComments(postID);
 });
 
 class PostController extends StateNotifier<bool> {
@@ -63,6 +74,9 @@ class PostController extends StateNotifier<bool> {
         description: description);
 
     final res = await _postRepository.addPost(post);
+    _ref
+        .read(userProfileControllerProvider.notifier)
+        .updateUserKarma(UserKarma.textPost);
     state = false;
 
     res.fold((left) => showSnackBar(context, left.message), (right) {
@@ -97,7 +111,9 @@ class PostController extends StateNotifier<bool> {
 
     final res = await _postRepository.addPost(post);
     state = false;
-
+    _ref
+        .read(userProfileControllerProvider.notifier)
+        .updateUserKarma(UserKarma.linkPost);
     res.fold((left) => showSnackBar(context, left.message), (right) {
       showSnackBar(context, "Posted Successfully");
       Routemaster.of(context).pop();
@@ -136,8 +152,10 @@ class PostController extends StateNotifier<bool> {
       );
 
       final res = await _postRepository.addPost(post);
+      _ref
+          .read(userProfileControllerProvider.notifier)
+          .updateUserKarma(UserKarma.imagePost);
       state = false;
-
       res.fold((left) => showSnackBar(context, left.message), (right) {
         showSnackBar(context, "Posted Successfully");
         Routemaster.of(context).pop();
@@ -150,5 +168,56 @@ class PostController extends StateNotifier<bool> {
       return _postRepository.fetchUserPosts(community);
     }
     return Stream.value([]);
+  }
+
+  void deletePost(Post post, BuildContext context) async {
+    final res = await _postRepository.deletePost(post);
+
+    _ref
+        .read(userProfileControllerProvider.notifier)
+        .updateUserKarma(UserKarma.deletePost);
+
+    res.fold((left) => null,
+        (right) => showSnackBar(context, "Post deleted successfully"));
+  }
+
+  void upvote(Post post) async {
+    final userId = _ref.read(userProvider)!.uid;
+    _postRepository.upvote(post, userId);
+  }
+
+  void downvote(Post post) async {
+    final userId = _ref.read(userProvider)!.uid;
+    _postRepository.downvote(post, userId);
+  }
+
+  Stream<Post> getPostbyId(String postId) {
+    return _postRepository.getPostbyId(postId);
+  }
+
+  void addComment(
+      {required BuildContext context,
+      required String text,
+      required Post post}) async {
+    final user = _ref.read(userProvider);
+    final commentId = const Uuid().v4();
+    Comment comment = Comment(
+        id: commentId,
+        text: text,
+        createdAt: DateTime.now(),
+        postId: post.id,
+        username: user!.name,
+        profilePic: user.profilePic);
+
+    final res = await _postRepository.addComment(comment);
+    _ref
+        .read(userProfileControllerProvider.notifier)
+        .updateUserKarma(UserKarma.comment);
+    res.fold((left) => showSnackBar(context, "Failed to add comment"),
+        (right) => null);
+  }
+
+  Stream<List<Comment>> fetchPostComments(String postId) {
+    return _postRepository.getCommentOfPost(postId);
   }
 }

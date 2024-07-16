@@ -6,6 +6,7 @@ import 'package:reddit/core/providers/failures.dart';
 import 'package:reddit/core/providers/firebase_providers.dart';
 import 'package:reddit/core/type_defs.dart';
 import 'package:reddit/models/community_model.dart';
+import 'package:reddit/models/post_model.dart';
 
 final communityRepositoryProvider = Provider((ref) {
   return CommunityRepository(firestore: ref.watch(fireStoreProvider));
@@ -121,4 +122,16 @@ class CommunityRepository {
 
   CollectionReference get _communities =>
       _firebaseFirestore.collection(FirebaseConstants.communitiesCollection);
+  CollectionReference get _posts =>
+      _firebaseFirestore.collection(FirebaseConstants.postsCollection);
+
+  Stream<List<Post>> getCommunityPost(String name) {
+    return _posts
+        .where('communityName', isEqualTo: name)
+        .orderBy('createdAt', descending: true)
+        .snapshots()
+        .map((e) => e.docs
+            .map((e) => Post.fromMap(e.data() as Map<String, dynamic>))
+            .toList());
+  }
 }

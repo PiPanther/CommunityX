@@ -18,7 +18,10 @@ class FeedScreen extends ConsumerWidget {
                   itemCount: data.length,
                   itemBuilder: (context, index) {
                     final post = data[index];
-                    return PostCard(post: post);
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 5),
+                      child: PostCard(post: post),
+                    );
                   });
             },
             error: (error, stackTrace) {
